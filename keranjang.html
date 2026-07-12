@@ -711,7 +711,9 @@
                                 mobileCartBadge.innerText = displayText;
                             }
                         }
-                    } catch (e) {}
+                    } catch (e) {
+                        console.error("Gagal sinkronisasi keranjang:", e);
+                    }
                 }
 
                 // 2. Perisai Voucher
@@ -736,7 +738,9 @@
                                 mpBadge.innerText = promoLen; 
                             }
                         }
-                    } catch (e) {}
+                    } catch (e) {
+                        console.error("Gagal sinkronisasi voucher:", e);
+                    }
                 }
 
                 // 3. Perisai Pesanan Aktif
@@ -763,7 +767,9 @@
                                 moBadge.innerText = activeLenStr; 
                             }
                         }
-                    } catch (e) {}
+                    } catch (e) {
+                        console.error("Gagal sinkronisasi pesanan:", e);
+                    }
                 }
             }
 
@@ -1200,6 +1206,13 @@
                     }
 
                     const courierLogos = {
+                        // 1. Kamus Logo Varian Spesifik (KUNCI KOMBINASI: "perusahaan_varian")
+                        // Silakan ganti URL 'https://...' di bawah ini dengan link gambar logo khusus varian yang Anda miliki
+                        "jne_yes": "https://placehold.co/50x20/e0e5ec/0984e3?text=JNE+YES",
+                        "jne_jtr": "https://placehold.co/50x20/e0e5ec/0984e3?text=JTR+CARGO",
+                        "jnt_ez": "https://placehold.co/50x20/e0e5ec/e3000f?text=JNT+EZ",
+
+                        // 2. Kamus Logo Induk Asli Anda (Sistem Gugur / Fallback)
                         "jne": "https://zonalogo.com/assets/logo-jne.webp",
                         "jnt": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/J%26T_Express_logo.svg/3840px-J%26T_Express_logo.svg.png",
                         "sicepat": "https://download.bloguna.com/uploads/152878/SiCepat-Express.png",
@@ -1213,11 +1226,17 @@
                     pricing.forEach(c => {
                         const price = c.price || 0;
                         const companyRaw = String(c.company).toLowerCase();
+                        const typeRaw = String(c.type).toLowerCase();
+                        
                         const safeCompany = escapeHTML(companyRaw);
                         const safeType = escapeHTML(String(c.type));
                         const cName = `${safeCompany.toUpperCase()} - ${safeType.toUpperCase()}`;
                         
-                        const logoUrl = courierLogos[companyRaw] || 'https://placehold.co/50x20/e0e5ec/a3b1c6?text=Kurir';
+                        // Kunci Kombinasi (Contoh: "jne_yes")
+                        const variantKey = `${companyRaw}_${typeRaw}`;
+                        
+                        // Sistem Gugur (Cek Varian Khusus -> Cek Induk Utama -> Gambar Abu-abu Default)
+                        const logoUrl = courierLogos[variantKey] || courierLogos[companyRaw] || 'https://placehold.co/50x20/e0e5ec/a3b1c6?text=Kurir';
                         
                         let cleanDuration = c.duration ? String(c.duration).replace(/days|day/gi, '').trim() : '';
                         const durasi = cleanDuration ? `${escapeHTML(cleanDuration)} Hari` : '-';
