@@ -783,7 +783,7 @@
                 }
 
                 try {
-                    const response = await fetch(`${BASE_URL}/api/products`);
+                    const response = await fetch('./katalog.json');
                     if (response.ok) {
                         let freshProducts = await response.json();
                         
