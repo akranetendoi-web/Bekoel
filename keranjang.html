@@ -1522,20 +1522,14 @@
                 configurable: false
             });
 
-            async function loadMidtransDynamically() {
-                try {
-                    const res = await fetch('/api/config');
-                    const data = await res.json();
-
-                    if (data.midtrans_client_key) {
-                        const script = document.createElement('script');
-                        script.type = 'text/javascript';
-                        script.src = 'https://app.sandbox.midtrans.com/snap/snap.js';
-                        script.setAttribute('data-client-key', escapeHTML(data.midtrans_client_key));
-                        document.head.appendChild(script);
-                    }
-                } catch (error) { }
-            }
+            function loadMidtransScriptDynamically() {
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = 'https://app.sandbox.midtrans.com/snap/snap.js';
+    // Ganti teks di bawah dengan Client Key Midtrans Anda
+    script.setAttribute('data-client-key', 'Mid-client-93w9ptgEHoMbavn8'); 
+    document.head.appendChild(script);
+}
 
             window.addEventListener('DOMContentLoaded', async () => { 
                 updateNavUI(); 
