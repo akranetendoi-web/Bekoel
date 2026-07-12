@@ -698,15 +698,18 @@
                             const totalQty = cartItems.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
                             setLocalCache('bakoel_cart_qty', totalQty, 10 * 60 * 1000);
                             
-                            // Gunakan pelindung opsional untuk mencegah error pada halaman yang tidak memiliki icon badge
-                            if (typeof updateCartBadgeDirectly === "function") {
-                                updateCartBadgeDirectly(totalQty, false); 
-                            } else {
-                                const cartBadge = document.getElementById('cartBadge');
-                                const mobileCartBadge = document.getElementById('mobileCartBadge');
-                                const displayText = totalQty > 99 ? '99+' : escapeHTML(String(totalQty));
-                                if(cartBadge && totalQty > 0) { cartBadge.style.display = 'flex'; cartBadge.innerText = displayText; }
-                                if(mobileCartBadge && totalQty > 0) { mobileCartBadge.style.display = 'flex'; mobileCartBadge.innerText = displayText; }
+                            // Eksekusi langsung tanpa memanggil fungsi dari luar
+                            const cartBadge = document.getElementById('cartBadge');
+                            const mobileCartBadge = document.getElementById('mobileCartBadge');
+                            const displayText = totalQty > 99 ? '99+' : escapeHTML(String(totalQty));
+                            
+                            if(cartBadge) {
+                                cartBadge.style.display = totalQty > 0 ? 'flex' : 'none'; 
+                                cartBadge.innerText = displayText; 
+                            }
+                            if(mobileCartBadge) { 
+                                mobileCartBadge.style.display = totalQty > 0 ? 'flex' : 'none'; 
+                                mobileCartBadge.innerText = displayText; 
                             }
                         }
                     } catch (e) {}
