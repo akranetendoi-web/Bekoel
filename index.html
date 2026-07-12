@@ -456,7 +456,7 @@
         Object.freeze(String.prototype);
 
         const isLocalhost = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
-        const BASE_URL = isLocalhost ? 'http://127.0.0.1:10000' : '';
+        const BASE_URL = isLocalhost ? 'http://127.0.0.1:10000' : 'https://rust-vjn7.onrender.com';
 
         // ANTI-XSS (#1) & ANTI-HTML INJECTION (#4) MUTLAK
         function escapeHTML(str) {
