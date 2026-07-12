@@ -791,7 +791,7 @@
                     allProducts = cached;
                 } else {
                     try {
-                        const res = await fetch(`${BASE_URL}/api/products`);
+                        const res = await fetch('./katalog.json');
                         if (res.ok) {
                             allProducts = await res.json();
                             setLocalCache('bakoel_products_catalog', allProducts, 15 * 60 * 1000);
@@ -1244,59 +1244,6 @@
                                     ${formatRupiah(price)}
                                 </div>
                                 
-                            </div>`;
-                    });
-                } catch (error) {
-                    let errMsg = error.message || "Gagal menghubungi kurir";
-                    if (errMsg.toLowerCase().includes("postal code") || errMsg.toLowerCase().includes("biteship")) {
-                        errMsg = "Kode pos tidak ditemukan atau tidak terjangkau kurir. HARAP UNTUK MEMMPERBAIKI KODE POS.";
-                    }
-                    container.innerHTML = `<div style="text-align:center; font-size:12px; color:#ff4757; padding: 20px;"><b>Gagal:</b> ${escapeHTML(errMsg)}</div>`;
-                }
-            }
-                
-                try {
-                    const payloadItems = cartItems.map(x => ({ product_id: x.product_id, quantity: Number(x.quantity) }));
-                    
-                    const payloadData = {
-                        destination_postal_code: String(globalZip),
-                        postal_code: String(globalZip),
-                        couriers: "jne,sicepat,jnt,pos", 
-                        items: payloadItems 
-                    };
-
-                    const res = await fetch(`${BASE_URL}/api/shipping-rates`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.access_token}` },
-                        body: JSON.stringify(payloadData)
-                    });
-                    
-                    if (!res.ok) {
-                        const errData = await res.json();
-                        throw new Error(errData.error || "Gagal menghubungi kurir");
-                    }
-                    const data = await res.json();
-                    const pricing = data.pricing || [];
-                    
-                    if(pricing.length === 0) {
-                        container.innerHTML = '<div style="text-align:center; font-size:12px; color:#ff4757; padding: 20px;">Kurir tidak menjangkau kodepos ini.</div>';
-                        return;
-                    }
-
-                    container.innerHTML = '';
-                    pricing.forEach(c => {
-                        const price = c.price || 0;
-                        const safeCompany = escapeHTML(String(c.company));
-                        const safeType = escapeHTML(String(c.type));
-                        const cName = `${safeCompany.toUpperCase()} - ${safeType}`;
-                        
-                        container.innerHTML += `
-                            <div class="promo-pill" style="cursor:pointer;" onclick="window.selectCourier('${safeCompany}', '${safeType}', ${price}, '${escapeHTML(cName)}')">
-                                <div class="promo-pill-info">
-                                    <span class="promo-pill-code" style="color: var(--accent-color); font-size: 14px;">${escapeHTML(cName)}</span>
-                                    <div class="promo-pill-desc">Estimasi: ${escapeHTML(c.estimated_delivery || '-')}</div>
-                                </div>
-                                <div style="font-weight:700; color:var(--text-main); font-size: 13px;">${formatRupiah(price)}</div>
                             </div>`;
                     });
                 } catch (error) {
