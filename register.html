@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Akun | Bakoel</title>
+    
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains">
+    <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin">
+    
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com https://fonts.gstatic.com https://api.dicebear.com; img-src 'self' data: https: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; connect-src 'self' https://*.onrender.com https://api.biteship.com https://app.sandbox.midtrans.com;">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        :root {
+            --bg-color: #e0e5ec; --text-main: #2d3436; --text-muted: #636e72; --accent-color: #0984e3;
+            --shadow-light: #ffffff; --shadow-dark: #a3b1c6;
+            --neu-flat: 9px 9px 16px var(--shadow-dark), -9px -9px 16px var(--shadow-light);
+            --neu-pressed: inset 6px 6px 10px var(--shadow-dark), inset -6px -6px 10px var(--shadow-light);
+            --neu-flat-sm: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
+            --neu-pressed-sm: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1a1b1e; --text-main: #f5f6fa; --text-muted: #a4b0be; --accent-color: #00e5ff;
+            --shadow-light: rgba(255, 255, 255, 0.05); --shadow-dark: rgba(0, 0, 0, 0.6);
+            --neu-flat: 9px 9px 16px var(--shadow-dark), -9px -9px 16px var(--shadow-light);
+            --neu-pressed: inset 6px 6px 10px var(--shadow-dark), inset -6px -6px 10px var(--shadow-light);
+            --neu-flat-sm: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
+            --neu-pressed-sm: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; transition: background-color 0.4s ease, color 0.4s ease; }
+        
+        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+
+        /* --- NAVIGASI ATAS --- */
+        .top-nav { padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; background-color: var(--bg-color); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .logo { font-size: 20px; font-weight: 700; color: var(--accent-color); letter-spacing: 2px; display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        
+        .controls { display: flex; align-items: center; gap: 20px; flex: 1; justify-content: flex-end; }
+        .theme-switch { width: 60px; height: 30px; border-radius: 50px; background: var(--bg-color); box-shadow: var(--neu-pressed); position: relative; cursor: pointer; display: flex; align-items: center; padding: 4px; }
+        .switch-handle { width: 22px; height: 22px; border-radius: 50%; background: var(--bg-color); box-shadow: var(--neu-flat); position: absolute; left: 4px; transition: transform 0.4s ease; display: flex; justify-content: center; align-items: center; color: var(--accent-color); font-size: 10px; }
+        [data-theme="dark"] .switch-handle { transform: translateX(30px); }
+
+        .nav-link { color: var(--text-muted); text-decoration: none; position: relative; font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: color 0.3s ease;}
+        .nav-link:hover { color: var(--accent-color); }
+        .neu-btn-icon { background: var(--bg-color); color: var(--text-main); border: none; width: 48px; height: 48px; border-radius: 50%; font-size: 18px; display: flex; justify-content: center; align-items: center; box-shadow: var(--neu-flat-sm); cursor: pointer; text-decoration: none; position: relative; transition: all 0.2s; }
+        .neu-btn-icon:active { box-shadow: var(--neu-pressed-sm); color: var(--accent-color); }
+        .nav-btn-cap { background: var(--bg-color); color: var(--text-main); text-decoration: none; font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 8px; padding: 10px 22px; border-radius: 50px; box-shadow: var(--neu-flat-sm); transition: all 0.2s; }
+        .nav-btn-cap:active { box-shadow: var(--neu-pressed-sm); color: var(--accent-color); }
+
+        /* --- KONTEN REGISTER --- */
+        .container { max-width: 1000px; margin: 30px auto; padding: 0 20px; flex: 1; width: 100%; display: flex; justify-content: center; align-items: flex-start; }
+        
+        .register-container { background: var(--bg-color); border-radius: 30px; padding: 40px; box-shadow: var(--neu-flat); width: 100%; max-width: 650px; display: flex; flex-direction: column; gap: 15px; position: relative; margin-bottom: 50px;}
+        
+        .header-text { text-align: center; margin-bottom: 10px; }
+        .header-text h1 { font-size: 26px; font-weight: 700; color: var(--accent-color); margin-bottom: 5px; }
+        .header-text p { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; }
+
+        .input-group { position: relative; margin-bottom: 20px; width: 100%; }
+        
+        .neu-input { 
+            width: 100%; padding: 15px 20px 15px 50px; border-radius: 15px; border: none; 
+            background: var(--bg-color); color: var(--text-main); box-shadow: var(--neu-pressed-sm); 
+            outline: none; font-size: 13px; font-weight: 600; transition: all 0.3s ease;
+        }
+        
+        .input-icon { 
+            position: absolute; left: 20px; top: 50%; transform: translateY(-50%); 
+            color: var(--text-muted); font-size: 16px; pointer-events: none; transition: color 0.3s ease; 
+        }
+        
+        .neu-input:focus ~ .input-icon { color: var(--accent-color); }
+        .icon-textarea { top: 18px; transform: none; }
+
+        /* --- KOTAK ATURAN PASSWORD --- */
+        .pwd-rules-box {
+            background: var(--bg-color); padding: 15px 20px; border-radius: 15px;
+            box-shadow: var(--neu-pressed-sm); margin-top: -5px; margin-bottom: 20px;
+            display: flex; flex-direction: column; gap: 8px;
+        }
+        .rule-title { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 2px;}
+        .rule-item { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; color: var(--text-muted); transition: color 0.3s;}
+        .rule-item i { font-size: 12px; }
+        .rule-item.valid { color: #27ae60; }
+        .rule-item.invalid { color: #ff4757; }
+
+        .btn-submit { width: 100%; padding: 15px; border-radius: 50px; border: none; background: var(--bg-color); color: var(--accent-color); font-size: 15px; font-weight: 700; box-shadow: var(--neu-flat); cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 5px; transition: all 0.2s; }
+        .btn-submit:active { box-shadow: var(--neu-pressed); }
+        .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        .login-link { text-align: center; font-size: 13px; font-weight: 600; color: var(--text-muted); margin-top: 15px; }
+        .login-link a { color: var(--accent-color); text-decoration: none; font-weight: 700; }
+        .login-link a:hover { text-decoration: underline; }
+
+        .btn-back { position: absolute; top: 25px; left: 25px; width: 40px; height: 40px; border-radius: 50%; background: var(--bg-color); color: var(--text-main); text-decoration: none; display: flex; justify-content: center; align-items: center; box-shadow: var(--neu-flat-sm); transition: transform 0.2s; }
+        .btn-back:active { box-shadow: var(--neu-pressed-sm); color: var(--accent-color); }
+
+        .alert-toast { position: fixed; top: 100px; left: 50%; transform: translateX(-50%); padding: 12px 30px; border-radius: 50px; background: var(--bg-color); font-size: 13px; font-weight: 700; box-shadow: var(--neu-flat); display: none; z-index: 2000; align-items: center; gap: 10px; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translate(-50%, -10px); } to { opacity: 1; transform: translate(-50%, 0); } }
+
+        .bottom-nav { display: none; }
+
+        @media (max-width: 768px) {
+            .top-nav { padding: 12px 20px; }
+            .hide-on-mobile { display: none !important; }
+            .container { padding-bottom: 120px; margin-top: 10px; }
+            
+            .register-container { padding: 35px 20px; border-radius: 20px; margin-bottom: 20px; }
+            .form-grid { grid-template-columns: 1fr; gap: 0; }
+            .header-text h1 { font-size: 22px; }
+            .btn-back { top: -15px; left: 0; position: relative; margin-bottom: 10px; }
+
+            /* --- MASTER BOTTOM NAV MOBILE --- */
+            .bottom-nav { 
+                display: flex; position: fixed; bottom: 0; left: 0; width: 100%; 
+                background-color: var(--bg-color); border-radius: 25px 25px 0 0; 
+                box-shadow: 0 -8px 20px rgba(0,0,0,0.05); z-index: 999; 
+                padding: 10px 15px; 
+                justify-content: space-between; 
+                padding-bottom: max(15px, env(safe-area-inset-bottom)); 
+                gap: 8px; 
+            }
+            [data-theme="dark"] .bottom-nav { box-shadow: 0 -8px 20px rgba(0,0,0,0.4); }
+            
+            .bottom-nav-item { 
+                flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; 
+                text-decoration: none; color: var(--text-muted); font-size: 10px; font-weight: 600; 
+                padding: 10px 0; border-radius: 18px; 
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); background: transparent; 
+            }
+            
+            .bottom-nav-item i { 
+                font-size: 20px; margin-bottom: 4px; 
+                transition: transform 0.2s ease, color 0.2s ease; 
+            }
+            
+            .bottom-nav-item.active { 
+                color: var(--accent-color); 
+                background: var(--bg-color); 
+                box-shadow: var(--neu-pressed-sm); 
+            }
+            
+            .bottom-nav-item.active i { 
+                transform: scale(1.15); 
+            }
+            
+            .badge-container { position: relative; display: inline-flex; }
+        }
+    </style>
+<script src="analytics.js" async defer></script>     
+</head>
+<body>
+
+    <div class="top-nav">
+        <a href="index.html" class="logo"><i class="fas fa-box-open"></i>BAKOEL</a>
+        <div class="controls">
+            <div class="theme-switch" id="themeToggle" title="Toggle Dark Mode"><div class="switch-handle"><i class="fas fa-sun" id="switchIcon"></i></div></div>
+            <a href="promo.html" class="nav-link hide-on-mobile"><i class="fas fa-tags"></i> <span>Promo</span></a>
+            <a href="pesanan.html" class="nav-link hide-on-mobile"><i class="fas fa-box"></i> <span>Pesanan</span></a>
+            <a href="keranjang.html" class="neu-btn-icon hide-on-mobile" title="Keranjang"><i class="fas fa-shopping-cart"></i></a>
+            <a href="login.html" class="nav-btn-cap hide-on-mobile"><i class="fas fa-sign-in-alt"></i> <span>Login</span></a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="register-container">
+            <a href="login.html" class="btn-back" title="Kembali"><i class="fas fa-arrow-left"></i></a>
+            
+            <div class="header-text">
+                <h1>Buat Akun Grosir</h1>
+                <p>Lengkapi data di bawah untuk mulai berbelanja.</p>
+            </div>
+
+            <form id="registerForm">
+                <div class="form-grid">
+                    <div class="input-group">
+                        <input type="text" id="name" class="neu-input" placeholder="Nama Lengkap KTP" maxlength="100" required spellcheck="false">
+                        <i class="fas fa-id-card input-icon"></i>
+                    </div>
+                    
+                    <div class="input-group">
+                        <input type="text" id="nickname" class="neu-input" placeholder="Nama Panggilan" maxlength="50" required spellcheck="false">
+                        <i class="fas fa-smile input-icon"></i>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="input-group">
+                        <input type="tel" id="phone" class="neu-input" placeholder="Nomor WhatsApp Aktif" maxlength="20" required>
+                        <i class="fab fa-whatsapp input-icon" style="font-size: 18px;"></i>
+                    </div>
+                    
+                    <div class="input-group">
+                        <input type="text" id="kode_pos" class="neu-input" placeholder="Kode Pos" inputmode="numeric" pattern="[0-9]*" maxlength="10" required>
+                        <i class="fas fa-map-pin input-icon"></i>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <textarea id="address" class="neu-input" placeholder="Alamat Lengkap Pengiriman..." maxlength="500" style="resize: none; overflow: hidden; min-height: 54px;" required spellcheck="false"></textarea>
+                    <i class="fas fa-map-marker-alt input-icon icon-textarea"></i>
+                </div>
+
+                <div class="input-group">
+                    <input type="email" id="email" class="neu-input" placeholder="Alamat Email Aktif" maxlength="150" required spellcheck="false">
+                    <i class="fas fa-envelope input-icon"></i>
+                </div>
+
+                <div class="input-group" style="margin-bottom: 15px;">
+                    <input type="password" id="password" class="neu-input" placeholder="Buat Kata Sandi" maxlength="100" required>
+                    <i class="fas fa-lock input-icon"></i>
+                </div>
+
+                <div class="pwd-rules-box">
+                    <div class="rule-title">Keamanan Sandi</div>
+                    <div class="rule-item invalid" id="rule-length"><i class="fas fa-times"></i> Minimal 8 karakter</div>
+                    <div class="rule-item invalid" id="rule-upper"><i class="fas fa-times"></i> Mengandung huruf besar (A-Z)</div>
+                    <div class="rule-item invalid" id="rule-lower"><i class="fas fa-times"></i> Mengandung huruf kecil (a-z)</div>
+                    <div class="rule-item invalid" id="rule-number"><i class="fas fa-times"></i> Mengandung angka (0-9)</div>
+                    <div class="rule-item invalid" id="rule-symbol"><i class="fas fa-times"></i> Mengandung simbol (!@#$%^&*)</div>
+                </div>
+
+                <button type="submit" class="btn-submit" id="submitBtn">
+                    <i class="fas fa-user-plus"></i> <span>Daftar Sekarang</span>
+                </button>
+            </form>
+
+            <div class="login-link">
+                Sudah punya akun? <a href="login.html">Masuk di sini</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert-toast" id="alertToast">
+        <span id="alertIcon"></span>
+        <span id="alertMessage">Pesan</span>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="index.html" class="bottom-nav-item">
+            <i class="fas fa-home"></i><span>Beranda</span>
+        </a>
+        
+        <a href="promo.html" class="bottom-nav-item">
+            <div class="badge-container"><i class="fas fa-tags"></i></div>
+            <span>Promo</span>
+        </a>
+        
+        <a href="keranjang.html" class="bottom-nav-item">
+            <div class="badge-container"><i class="fas fa-shopping-cart"></i></div>
+            <span>Keranjang</span>
+        </a>
+        
+        <a href="pesanan.html" class="bottom-nav-item">
+            <div class="badge-container"><i class="fas fa-box"></i></div>
+            <span>Pesanan</span>
+        </a>
+        
+        <a href="akun.html" class="bottom-nav-item active">
+            <i class="fas fa-user"></i><span>Akun</span>
+        </a>
+    </nav>
+
+    <script>
+        // =========================================================================
+        // SECURITY PATCH: KUNCI LINGKUNGAN JAVASCRIPT & SANITASI MUTLAK
+        // Membunuh DOM Clobbering, Clickjacking, dan Prototype Pollution
+        // =========================================================================
+        "use strict"; 
+        
+        if (window.top !== window.self) {
+            window.top.location = window.self.location;
+        }
+
+        Object.freeze(Object.prototype);
+        Object.freeze(Array.prototype);
+        Object.freeze(String.prototype);
+
+        function escapeHTML(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+            );
+        }
+
+        // =========================================================================
+        // HPC UPGRADE: ARSITEKTUR IIFE & LOCAL STORAGE CACHE MANAGER
+        // Sejalan dengan index.html untuk kecepatan Vercel Proxy
+        // =========================================================================
+        (function() {
+            // Karena ini halaman registrasi, jika user sudah punya sesi, lempar ke Beranda
+            if (localStorage.getItem('user_session')) { 
+                window.location.replace('index.html'); 
+                return; // Eksekusi script dihentikan di sini
+            }
+
+            const isLocalhost = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
+            const BASE_URL = isLocalhost ? 'http://127.0.0.1:10000' : ''; // Vercel Proxy Pattern
+
+            // Cache Utils (Untuk menyembunyikan Badge bagi Non-Login User tanpa Error)
+            function hideGuestBadges() {
+                ['promoBadge', 'orderBadge', 'cartBadge', 'mobilePromoBadge', 'mobileCartBadge', 'mobileOrderBadge'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.style.display = 'none';
+                });
+            }
+            hideGuestBadges();
+
+            // UI & THEME LOGIC
+            const themeToggle = document.getElementById('themeToggle');
+            const switchIcon = document.getElementById('switchIcon');
+            const html = document.documentElement;
+
+            if (localStorage.getItem('theme') === 'dark') { 
+                html.setAttribute('data-theme', 'dark'); 
+                switchIcon.classList.replace('fa-sun', 'fa-moon'); 
+            }
+
+            themeToggle.addEventListener('click', () => {
+                const isDark = html.getAttribute('data-theme') === 'dark';
+                html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+                localStorage.setItem('theme', isDark ? 'light' : 'dark');
+                switchIcon.classList.replace(isDark ? 'fa-moon' : 'fa-sun', isDark ? 'fa-sun' : 'fa-moon');
+            });
+
+            const alertToast = document.getElementById('alertToast');
+            const alertIcon = document.getElementById('alertIcon');
+            const alertMessage = document.getElementById('alertMessage');
+
+            // Textarea Auto-resize (Anti-DOM Clobbering dipastikan karena aman dari external script)
+            const addressInput = document.getElementById('address');
+            addressInput.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = this.scrollHeight + 'px';
+            });
+
+            function showAlert(msg, isSuccess) {
+                alertMessage.innerText = escapeHTML(String(msg)); 
+                if(isSuccess) {
+                    alertIcon.innerHTML = '<i class="fas fa-check-circle" style="color: #27ae60;"></i>';
+                    alertToast.style.color = '#27ae60';
+                } else {
+                    alertIcon.innerHTML = '<i class="fas fa-times-circle" style="color: #ff4757;"></i>';
+                    alertToast.style.color = '#ff4757';
+                }
+                alertToast.style.display = 'flex';
+                setTimeout(() => { alertToast.style.display = 'none'; }, 3500);
+            }
+
+            // FORM VALIDATION (Anti-ReDoS & Business Logic Protection)
+            const passwordInput = document.getElementById('password');
+            const ruleLength = document.getElementById('rule-length');
+            const ruleUpper = document.getElementById('rule-upper');
+            const ruleLower = document.getElementById('rule-lower');
+            const ruleNumber = document.getElementById('rule-number');
+            const ruleSymbol = document.getElementById('rule-symbol');
+            
+            let isPwdValid = false;
+
+            function updateRuleUI(element, isValid, text) {
+                if(!element) return;
+                if (isValid) {
+                    element.classList.replace('invalid', 'valid');
+                    element.innerHTML = `<i class="fas fa-check"></i> ${escapeHTML(text)}`;
+                } else {
+                    element.classList.replace('valid', 'invalid');
+                    element.innerHTML = `<i class="fas fa-times"></i> ${escapeHTML(text)}`;
+                }
+            }
+
+            passwordInput.addEventListener('input', function() {
+                const val = this.value;
+
+                // Eksekusi regex murni O(n) tanpa kompleksitas serangan ReDoS
+                const lenValid = val.length >= 8;
+                const upperValid = /[A-Z]/.test(val);
+                const lowerValid = /[a-z]/.test(val);
+                const numberValid = /[0-9]/.test(val);
+                const symbolValid = /[!@#$%^&*(),.?":{}|<>]/.test(val);
+
+                updateRuleUI(ruleLength, lenValid, 'Minimal 8 karakter');
+                updateRuleUI(ruleUpper, upperValid, 'Mengandung huruf besar (A-Z)');
+                updateRuleUI(ruleLower, lowerValid, 'Mengandung huruf kecil (a-z)');
+                updateRuleUI(ruleNumber, numberValid, 'Mengandung angka (0-9)');
+                updateRuleUI(ruleSymbol, symbolValid, 'Mengandung simbol (!@#$%^&*)');
+
+                isPwdValid = lenValid && upperValid && lowerValid && numberValid && symbolValid;
+            });
+
+            const form = document.getElementById('registerForm');
+            const submitBtn = document.getElementById('submitBtn');
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                if(!isPwdValid) {
+                    showAlert("Semua syarat keamanan password harus terpenuhi!", false);
+                    passwordInput.focus();
+                    return;
+                }
+
+                // Pengambilan data ketat & Sanitasi dasar
+                const name = document.getElementById('name').value.trim();
+                const nickname = document.getElementById('nickname').value.trim();
+                const phone = document.getElementById('phone').value.trim();
+                const kode_pos = document.getElementById('kode_pos').value.trim();
+                const address = document.getElementById('address').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const password = passwordInput.value;
+
+                // Proteksi Race Condition Click
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+                submitBtn.disabled = true;
+
+                try {
+                    const response = await fetch(`${BASE_URL}/api/auth`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                            action: 'register', 
+                            name: name, 
+                            nickname: nickname, 
+                            phone: phone, 
+                            kode_pos: kode_pos, 
+                            address: address, 
+                            email: email, 
+                            password: password 
+                        })
+                    });
+
+                    const result = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(result.error || 'Terjadi kesalahan pada server saat mendaftar.');
+                    }
+
+                    showAlert("Pendaftaran Berhasil! Mengalihkan ke Halaman Login...", true);
+                    passwordInput.value = ''; 
+                    
+                    // Delay pengalihan agar pesan sukses terlihat jelas
+                    setTimeout(() => { window.location.href = 'login.html'; }, 2500);
+
+                } catch (error) {
+                    showAlert(error.message, false);
+                    passwordInput.value = ''; 
+                    
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-user-plus"></i> <span>Daftar Sekarang</span>';
+                }
+            });
+
+        })();
+    </script>
+</body>
+</html>

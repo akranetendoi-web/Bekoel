@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promo & Voucher | Bakoel</title>
+    
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains">
+    <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin">
+    
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://*.onrender.com https://api.dicebear.com https://api.biteship.com https://nominatim.openstreetmap.org https://app.sandbox.midtrans.com; img-src 'self' data: https: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://app.sandbox.midtrans.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; frame-src 'self' https://app.sandbox.midtrans.com;">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" crossorigin="anonymous" referrerpolicy="no-referrer">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        :root {
+            --bg-color: #e0e5ec; --text-main: #2d3436; --text-muted: #636e72; --accent-color: #0984e3;
+            --shadow-light: #ffffff; --shadow-dark: #a3b1c6;
+            --neu-flat: 9px 9px 16px var(--shadow-dark), -9px -9px 16px var(--shadow-light);
+            --neu-pressed: inset 6px 6px 10px var(--shadow-dark), inset -6px -6px 10px var(--shadow-light);
+            --neu-flat-sm: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
+            --neu-pressed-sm: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1a1b1e; --text-main: #f5f6fa; --text-muted: #a4b0be; --accent-color: #00e5ff;
+            --shadow-light: rgba(255, 255, 255, 0.05); --shadow-dark: rgba(0, 0, 0, 0.6);
+            --neu-flat: 9px 9px 16px var(--shadow-dark), -9px -9px 16px var(--shadow-light);
+            --neu-pressed: inset 6px 6px 10px var(--shadow-dark), inset -6px -6px 10px var(--shadow-light);
+            --neu-flat-sm: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
+            --neu-pressed-sm: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; transition: background-color 0.4s ease, color 0.4s ease; }
+        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+
+        .top-nav { padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; background-color: var(--bg-color); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .logo { font-size: 20px; font-weight: 700; color: var(--accent-color); letter-spacing: 2px; display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        
+        .controls { display: flex; align-items: center; gap: 20px; flex: 1; justify-content: flex-end; }
+        .theme-switch { width: 60px; height: 30px; border-radius: 50px; background: var(--bg-color); box-shadow: var(--neu-pressed); position: relative; cursor: pointer; display: flex; align-items: center; padding: 4px; }
+        .switch-handle { width: 22px; height: 22px; border-radius: 50%; background: var(--bg-color); box-shadow: var(--neu-flat); position: absolute; left: 4px; transition: transform 0.4s ease; display: flex; justify-content: center; align-items: center; color: var(--accent-color); font-size: 10px; }
+        [data-theme="dark"] .switch-handle { transform: translateX(30px); }
+
+        .nav-link { color: var(--text-muted); text-decoration: none; position: relative; font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: color 0.3s ease;}
+        .nav-link:hover, .nav-link.active { color: var(--accent-color); }
+        .badge-count { position: absolute; top: -10px; right: -15px; background: #ff4757; color: white; font-size: 10px; font-weight: bold; padding: 2px 6px; border-radius: 10px; border: 2px solid var(--bg-color); display: flex; justify-content: center; align-items: center; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 10;}
+        .neu-btn-icon { background: var(--bg-color); color: var(--text-main); border: none; width: 48px; height: 48px; border-radius: 50%; font-size: 18px; display: flex; justify-content: center; align-items: center; box-shadow: var(--neu-flat-sm); cursor: pointer; text-decoration: none; position: relative; transition: all 0.2s; }
+        .neu-btn-icon:active { box-shadow: var(--neu-pressed-sm); color: var(--accent-color); }
+        .nav-btn-cap { background: var(--bg-color); color: var(--text-main); text-decoration: none; font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 8px; padding: 10px 22px; border-radius: 50px; box-shadow: var(--neu-flat-sm); transition: all 0.2s; }
+        .nav-btn-cap:active { box-shadow: var(--neu-pressed-sm); color: var(--accent-color); }
+        .nav-profile-badge { display: flex; flex-direction: row; align-items: center; justify-content: center; text-decoration: none; gap: 10px; transition: transform 0.2s ease; cursor: pointer; background: var(--bg-color); padding: 5px 15px 5px 5px; border-radius: 50px; box-shadow: var(--neu-flat-sm); }
+        .nav-profile-badge:active { box-shadow: var(--neu-pressed-sm); }
+        .nav-profile-badge img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; box-shadow: var(--neu-pressed-sm); border: 2px solid transparent; }
+        .nav-profile-badge span { font-size: 13px; font-weight: 700; color: var(--text-main); max-width: 80px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        .container { max-width: 1000px; margin: 30px auto; padding: 0 20px; flex: 1; width: 100%; }
+        .page-title { display: flex; align-items: center; gap: 15px; font-size: 24px; font-weight: 700; margin-bottom: 25px; }
+        .btn-back { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: var(--bg-color); color: var(--text-main); text-decoration: none; box-shadow: var(--neu-flat); transition: transform 0.2s; }
+        .btn-back:active { box-shadow: var(--neu-pressed); color: var(--accent-color); }
+
+        .promo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; padding-bottom: 50px; }
+        
+        .promo-card { background: var(--bg-color); border-radius: 20px; box-shadow: var(--neu-flat); display: flex; flex-direction: column; overflow: hidden; transition: transform 0.2s; }
+        .promo-card:hover { transform: translateY(-3px); }
+        
+        .promo-header { padding: 20px; color: white; display: flex; flex-direction: column; gap: 5px; position: relative; overflow: hidden; }
+        .promo-header::after { content: ''; position: absolute; right: -20px; top: -20px; width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 50%; }
+        .promo-title { font-size: 18px; font-weight: 700; line-height: 1.2; text-shadow: 0 2px 4px rgba(0,0,0,0.2); z-index: 1;}
+        .promo-desc { font-size: 12px; font-weight: 500; opacity: 0.9; z-index: 1;}
+
+        .promo-body { padding: 20px; display: flex; flex-direction: column; gap: 15px; }
+        .promo-info-row { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(128,128,128,0.2); padding-bottom: 8px; }
+        .info-label { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase;}
+        .info-value { font-size: 13px; font-weight: 700; color: var(--text-main); }
+        
+        .promo-code-box { background: var(--bg-color); border-radius: 12px; padding: 12px; box-shadow: var(--neu-pressed-sm); display: flex; justify-content: space-between; align-items: center; margin-top: 5px;}
+        .code-text { font-family: monospace; font-size: 16px; font-weight: 700; color: var(--accent-color); letter-spacing: 1px; }
+        .copy-btn { background: var(--bg-color); color: var(--text-main); border: none; padding: 8px 15px; border-radius: 8px; font-size: 11px; font-weight: 700; box-shadow: var(--neu-flat-sm); cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; }
+        .copy-btn:active { box-shadow: var(--neu-pressed-sm); }
+        .copy-btn.copied { color: #27ae60; box-shadow: var(--neu-pressed-sm); }
+
+        .empty-state { grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--text-muted); }
+        .empty-icon { font-size: 50px; margin-bottom: 20px; color: var(--shadow-dark); opacity: 0.5; }
+        .empty-text { font-size: 16px; font-weight: 600; margin-bottom: 10px; }
+        .empty-subtext { font-size: 12px; margin-bottom: 30px; }
+
+        .btn-shop-now { display: inline-flex; align-items: center; justify-content: center; gap: 10px; background: var(--bg-color); color: var(--accent-color); padding: 12px 30px; border-radius: 50px; text-decoration: none; font-size: 14px; font-weight: 700; box-shadow: var(--neu-flat); transition: all 0.3s; }
+        .btn-shop-now:active { box-shadow: var(--neu-pressed); }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 4000; opacity: 0; transition: opacity 0.3s ease; }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        
+        .modal-content { background: var(--bg-color); width: 90%; max-width: 320px; border-radius: 25px; padding: 30px 20px; box-shadow: var(--neu-flat); transform: translateY(30px); transition: transform 0.3s ease; text-align: center; display: flex; flex-direction: column; align-items: center;}
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+        
+        .neu-btn { padding: 12px; border-radius: 50px; border: none; background: var(--bg-color); color: var(--text-main); font-size: 13px; font-weight: 700; box-shadow: var(--neu-flat-sm); cursor: pointer; transition: all 0.3s; width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px;}
+        .neu-btn:active { box-shadow: var(--neu-pressed-sm); color: var(--accent-color); }
+
+        .footer-prof { background-color: #1a1b1e; color: #f5f6fa; padding: 50px 20px 80px 20px; margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1); }
+        .footer-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr; gap: 30px; }
+        .footer-logo { font-size: 20px; font-weight: 700; color: #00e5ff; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .footer-desc { font-size: 13px; color: #a4b0be; line-height: 1.6; margin-bottom: 20px; }
+        .footer-socials { display: flex; gap: 15px; }
+        .social-icon { width: 35px; height: 35px; border-radius: 50%; background: rgba(255,255,255,0.05); color: #f5f6fa; display: flex; justify-content: center; align-items: center; text-decoration: none; transition: background 0.3s; }
+        .social-icon:hover { background: #00e5ff; color: #1a1b1e; }
+        .footer-title { font-size: 15px; font-weight: 600; margin-bottom: 20px; color: #fff; text-transform: uppercase; letter-spacing: 1px; }
+        .footer-links { list-style: none; padding: 0; }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-links a { color: #a4b0be; text-decoration: none; font-size: 13px; transition: color 0.3s; cursor: pointer; }
+        .footer-links a:hover { color: #00e5ff; }
+        .footer-contact-item { display: flex; align-items: flex-start; gap: 10px; color: #a4b0be; font-size: 13px; margin-bottom: 15px; line-height: 1.5; }
+        .footer-contact-item i { color: #00e5ff; margin-top: 3px; }
+        .payment-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .pay-box { background-color: #ffffff; border-radius: 6px; height: 38px; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.3); cursor: default; padding: 5px 8px; }
+        .pay-img { width: 100%; height: 100%; object-fit: contain; }
+
+        @media (max-width: 1024px) { .footer-container { grid-template-columns: 1fr 1fr 1fr; } }
+
+        .bottom-nav { display: none; }
+
+        @media (max-width: 768px) {
+            .top-nav { padding: 12px 20px; }
+            .hide-on-mobile { display: none !important; }
+            .container { padding-bottom: 120px; margin-top: 15px; } 
+            
+            .promo-grid { grid-template-columns: 1fr; gap: 20px; }
+            .promo-header { padding: 15px; }
+            .promo-title { font-size: 16px; }
+            .promo-body { padding: 15px; }
+
+            .bottom-nav { 
+                display: flex; position: fixed; bottom: 0; left: 0; width: 100%; 
+                background-color: var(--bg-color); border-radius: 25px 25px 0 0; 
+                box-shadow: 0 -8px 20px rgba(0,0,0,0.05); z-index: 999; 
+                padding: 10px 15px; 
+                justify-content: space-between; 
+                padding-bottom: max(15px, env(safe-area-inset-bottom)); 
+                gap: 8px; 
+            }
+            [data-theme="dark"] .bottom-nav { box-shadow: 0 -8px 20px rgba(0,0,0,0.4); }
+            
+            .bottom-nav-item { 
+                flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; 
+                text-decoration: none; color: var(--text-muted); font-size: 10px; font-weight: 600; 
+                padding: 10px 0; border-radius: 18px; 
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); background: transparent; 
+            }
+            
+            .bottom-nav-item i { font-size: 20px; margin-bottom: 4px; transition: transform 0.2s ease, color 0.2s ease; }
+            .bottom-nav-item.active { color: var(--accent-color); background: var(--bg-color); box-shadow: var(--neu-pressed-sm); }
+            .bottom-nav-item.active i { transform: scale(1.15); }
+            
+            .badge-container { position: relative; display: inline-flex; }
+            .bottom-nav-item .badge-count { 
+                position: absolute; top: -5px; right: -12px; background: #ff4757; color: white; 
+                font-size: 9px; font-weight: bold; padding: 2px 5px; border-radius: 10px; 
+                border: 2px solid var(--bg-color); display: flex; justify-content: center; align-items: center; z-index: 2;
+            }
+
+            .footer-container { grid-template-columns: 1fr; gap: 30px; text-align: left; }
+            .footer-contact-item { justify-content: flex-start; }
+            .footer-socials { justify-content: flex-start; }
+            .payment-grid { grid-template-columns: repeat(4, 60px); justify-content: flex-start; margin: 0; }
+        }
+    </style>
+<script src="analytics.js" async defer></script>     
+</head>
+<body>
+
+    <div class="top-nav">
+        <a href="index.html" class="logo"><i class="fas fa-box-open"></i>BAKOEL</a>
+        
+        <div class="controls">
+            <div class="theme-switch" id="themeToggle" title="Toggle Dark Mode">
+                <div class="switch-handle"><i class="fas fa-sun" id="switchIcon"></i></div>
+            </div>
+            
+            <a href="promo.html" class="nav-link hide-on-mobile active" title="Promo">
+                <i class="fas fa-tags"></i> <span>Promo</span>
+                <span class="badge-count" id="promoBadge" style="display: none;">0</span>
+            </a>
+            
+            <a href="pesanan.html" class="nav-link hide-on-mobile" title="Pesanan">
+                <i class="fas fa-box"></i> <span>Pesanan</span>
+                <span class="badge-count" id="orderBadge" style="display: none;">0</span>
+            </a>
+            
+            <a href="keranjang.html" class="neu-btn-icon hide-on-mobile" id="desktopCartIconTarget" title="Keranjang">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="badge-count" id="cartBadge" style="display: none; top: -5px; right: -5px; width: 18px; height: 18px; padding: 0;">0</span>
+            </a>
+            
+            <a href="login.html" class="nav-btn-cap hide-on-mobile" id="navLoginBtn">
+                <i class="fas fa-sign-in-alt"></i> <span>Login</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="page-title">
+            <a href="index.html" class="btn-back"><i class="fas fa-arrow-left"></i></a>
+            <div>Promo & Voucher</div>
+        </div>
+
+        <div class="promo-grid" id="promoContainer">
+            <div class="empty-state">
+                <i class="fas fa-spinner fa-spin fa-3x" style="color: var(--accent-color); margin-bottom: 20px;"></i>
+                <div class="empty-text">Mencari promo eksklusif...</div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer-prof">
+        <div class="footer-container">
+            <div>
+                <div class="footer-logo"><i class="fas fa-box-open"></i>BAKOEL</div>
+                <p class="footer-desc">Platform e-commerce grosir terpercaya di Batam. Menyediakan berbagai kebutuhan usaha Anda dengan harga terbaik.</p>
+                <div class="footer-socials">
+                    <a href="https://facebook.com/Bakoel" target="_blank" rel="noopener noreferrer" class="social-icon" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://instagram.com/Bakoel" target="_blank" rel="noopener noreferrer" class="social-icon" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://tiktok.com/@Bakoel" target="_blank" rel="noopener noreferrer" class="social-icon" title="TikTok"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+            <div>
+                <h4 class="footer-title">Hubungi Kami</h4>
+                <div class="footer-contact-item"><i class="fas fa-map-marker-alt"></i><span>Batam Centre, Kepulauan Riau</span></div>
+                <div class="footer-contact-item"><i class="fas fa-phone-alt"></i><span>0815 333 5000</span></div>
+                <div class="footer-contact-item"><i class="fas fa-envelope"></i><span>admin@Bakoel.com</span></div>
+            </div>
+            
+            <div>
+                <h4 class="footer-title">Kategori</h4>
+                <ul class="footer-links" id="footerCategoryList">
+                    <li><i class="fas fa-spinner fa-spin"></i> Memuat...</li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="footer-title">Perusahaan</h4>
+                <ul class="footer-links">
+                    <li><a href="tentang-kami.html">Tentang Kami</a></li>
+                    <li><a href="cara-berbelanja.html">Cara Berbelanja</a></li>
+                    <li><a href="bantuan.html">Bantuan (FAQ)</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="footer-title">Partner Pembayaran</h4>
+                <div class="payment-grid" id="paymentContainer"></div>
+            </div>
+        </div>
+    </footer>
+
+    <nav class="bottom-nav">
+        <a href="index.html" class="bottom-nav-item">
+            <i class="fas fa-home"></i><span>Beranda</span>
+        </a>
+        
+        <a href="promo.html" class="bottom-nav-item active">
+            <div class="badge-container">
+                <i class="fas fa-tags"></i>
+                <span class="badge-count" id="mobilePromoBadge" style="display: none;">0</span>
+            </div>
+            <span>Promo</span>
+        </a>
+        
+        <a href="keranjang.html" class="bottom-nav-item">
+            <div class="badge-container">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="badge-count" id="mobileCartBadge" style="display: none;">0</span>
+            </div>
+            <span>Keranjang</span>
+        </a>
+        
+        <a href="pesanan.html" class="bottom-nav-item">
+            <div class="badge-container">
+                <i class="fas fa-box"></i>
+                <span class="badge-count" id="mobileOrderBadge" style="display: none;">0</span>
+            </div>
+            <span>Pesanan</span>
+        </a>
+        
+        <a href="akun.html" class="bottom-nav-item" id="mobileAccountBtn">
+            <i class="fas fa-user"></i><span>Akun</span>
+        </a>
+    </nav>
+
+    <div class="modal-overlay" id="notificationModal">
+        <div class="modal-content">
+            <div id="notifIcon" style="font-size: 45px; margin-bottom: 15px; display: flex; justify-content: center; width: 100%;"></div>
+            <h3 id="notifTitle" style="font-size: 18px; font-weight: 700; margin-bottom: 8px; width: 100%;">Judul</h3>
+            <p id="notifMessage" style="font-size: 13px; color: var(--text-muted); margin-bottom: 25px; line-height: 1.5; width: 100%;">Pesan</p>
+            <button class="neu-btn" id="notifBtn" style="width: 100%;">Mengerti</button>
+        </div>
+    </div>
+
+    <script>
+        // =========================================================================
+        // SECURITY PATCH: KUNCI LINGKUNGAN JAVASCRIPT & SANITASI MUTLAK
+        // Mencegah Prototype Pollution (#89), Clickjacking (#3), dan DOM Clobbering (#5)
+        // =========================================================================
+        "use strict";
+
+        Object.freeze(Object.prototype);
+        Object.freeze(Array.prototype);
+        Object.freeze(String.prototype);
+
+        if (window.top !== window.self) { 
+            window.top.location = window.self.location; 
+        }
+
+        // Sanitasi Murni Anti XSS (#1) & HTML Injection (#4)
+        function escapeHTML(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
+        }
+
+        function safeURL(url) {
+            if (!url) return 'https://placehold.co/60x60/e0e5ec/a3b1c6?text=Bakoel';
+            try {
+                const parsedUrl = new URL(url, window.location.origin);
+                if (['http:', 'https:'].includes(parsedUrl.protocol)) {
+                    return escapeHTML(parsedUrl.href);
+                }
+            } catch (e) {
+                const strUrl = String(url).trim();
+                if (strUrl.startsWith('/') || strUrl.startsWith('./') || strUrl.startsWith('../')) {
+                    return escapeHTML(strUrl);
+                }
+            }
+            return 'https://placehold.co/60x60/e0e5ec/a3b1c6?text=Bakoel'; 
+        }
+
+        // =========================================================================
+        // ARCHITECTURE PATCH: IIFE (Immediately Invoked Function Expression)
+        // Mencegah eksfiltrasi variabel oleh ekstensi berbahaya (#75, #41)
+        // =========================================================================
+        (function() {
+            const isLocalhost = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
+            const BASE_URL = isLocalhost ? 'http://127.0.0.1:10000' : '';
+
+            // Cek Sesi (Promo bisa dilihat non-login, tapi badge dinonaktifkan)
+            const sessionData = localStorage.getItem('user_session');
+            let session = null;
+            if (sessionData) {
+                try {
+                    session = JSON.parse(sessionData);
+                    if (!session || !session.access_token) throw new Error();
+                } catch(e) {
+                    localStorage.removeItem('user_session');
+                    session = null;
+                }
+            }
+
+            // --- HPC UPGRADE 1: SISTEM CACHE MEMORI (Stale-While-Revalidate) ---
+            const CACHE_TTL = 30 * 60 * 1000; // 30 Menit untuk Promo (Jarang Berubah)
+            
+            function setLocalCache(key, data, customTTL = CACHE_TTL) {
+                try {
+                    localStorage.setItem(key, JSON.stringify({
+                        data: data,
+                        expiry: Date.now() + customTTL
+                    }));
+                } catch (e) {}
+            }
+
+            function getLocalCache(key) {
+                try {
+                    const item = localStorage.getItem(key);
+                    if (!item) return null;
+                    const parsed = JSON.parse(item);
+                    if (Date.now() > parsed.expiry) {
+                        localStorage.removeItem(key);
+                        return null;
+                    }
+                    return parsed.data;
+                } catch (e) { 
+                    return null; 
+                }
+            }
+
+            function formatRupiah(number) { 
+                let parsed = parseInt(number) || 0;
+                return "Rp " + parsed.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."); 
+            }
+
+            function showNotification(title, message, type, redirectUrl = null) {
+                const notifModal = document.getElementById('notificationModal');
+                const notifIcon = document.getElementById('notifIcon');
+                const notifTitle = document.getElementById('notifTitle');
+                const notifMessage = document.getElementById('notifMessage');
+                const notifBtn = document.getElementById('notifBtn');
+
+                if(type === 'success') {
+                    notifIcon.innerHTML = '<i class="fas fa-check-circle" style="color: #27ae60;"></i>';
+                    notifTitle.style.color = '#27ae60';
+                    notifBtn.innerText = 'Lanjut';
+                } else if(type === 'error') {
+                    notifIcon.innerHTML = '<i class="fas fa-times-circle" style="color: #ff4757;"></i>';
+                    notifTitle.style.color = '#ff4757';
+                    notifBtn.innerText = 'Tutup';
+                } else if(type === 'warning') {
+                    notifIcon.innerHTML = '<i class="fas fa-exclamation-triangle" style="color: #e67e22;"></i>';
+                    notifTitle.style.color = '#e67e22';
+                    notifBtn.innerText = redirectUrl ? 'Login Sekarang' : 'Mengerti';
+                }
+
+                notifTitle.textContent = String(title);
+                notifMessage.textContent = String(message);
+                
+                notifBtn.onclick = function() { 
+                    notifModal.classList.remove('active'); 
+                    if(redirectUrl) window.location.href = escapeHTML(redirectUrl);
+                };
+                notifModal.classList.add('active');
+            }
+
+            const themeToggle = document.getElementById('themeToggle');
+            const switchIcon = document.getElementById('switchIcon');
+            const html = document.documentElement;
+
+            if (localStorage.getItem('theme') === 'dark') { html.setAttribute('data-theme', 'dark'); switchIcon.classList.replace('fa-sun', 'fa-moon'); }
+
+            themeToggle.addEventListener('click', () => {
+                const isDark = html.getAttribute('data-theme') === 'dark';
+                html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+                localStorage.setItem('theme', isDark ? 'light' : 'dark');
+                switchIcon.classList.replace(isDark ? 'fa-moon' : 'fa-sun', isDark ? 'fa-sun' : 'fa-moon');
+            });
+
+            async function loadFooterData() {
+                try {
+                    fetch(`${BASE_URL}/api/logos`).then(res => res.json()).then(logos => {
+                        const paymentContainer = document.getElementById('paymentContainer');
+                        if (paymentContainer) {
+                            paymentContainer.innerHTML = '';
+                            logos.forEach(logo => {
+                                paymentContainer.innerHTML += `<div class="pay-box"><img src="${safeURL(logo.url)}" alt="Partner Pembayaran" class="pay-img" draggable="false" title="${escapeHTML(logo.name)}"></div>`;
+                            });
+                        }
+                    }).catch(e => {});
+
+                    fetch(`${BASE_URL}/api/products`).then(res => res.json()).then(products => {
+                        const uniqueCategories = new Set();
+                        products.forEach(p => { if (p.category) uniqueCategories.add(p.category); });
+                        
+                        const footerCatList = document.getElementById('footerCategoryList');
+                        if (footerCatList) {
+                            footerCatList.innerHTML = `<li><a href="index.html?kategori=Semua Barang">Semua Barang</a></li>`;
+                            Array.from(uniqueCategories).sort().forEach(cat => {
+                                footerCatList.innerHTML += `<li><a href="index.html?kategori=${encodeURIComponent(cat)}">${escapeHTML(cat)}</a></li>`;
+                            });
+                        }
+                    }).catch(e => {});
+                } catch(error) {}
+            }
+
+            async function updateNavUI() {
+                const loginBtn = document.getElementById('navLoginBtn');
+                const mobileAccountBtn = document.getElementById('mobileAccountBtn');
+
+                if(!session) {
+                    ['promoBadge', 'orderBadge', 'cartBadge', 'mobilePromoBadge', 'mobileCartBadge', 'mobileOrderBadge'].forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el) el.style.display = 'none';
+                    });
+                    return;
+                }
+
+                try {
+                    const userRes = await fetch(`${BASE_URL}/api/user`, { headers: { 'Authorization': `Bearer ${session.access_token}` } });
+                    if (userRes.status === 401 || userRes.status === 403) {
+                        localStorage.removeItem('user_session'); 
+                        window.location.reload();
+                        return;
+                    }
+
+                    if (userRes.ok) {
+                        const userData = await userRes.json();
+                        const rawDisplayName = userData.nama_panggilan || (userData.nama_lengkap ? userData.nama_lengkap.split(' ')[0] : "User");
+                        const displayName = escapeHTML(rawDisplayName);
+                        const avatarUrl = `https://api.dicebear.com/7.x/micah/svg?seed=${encodeURIComponent(displayName)}&backgroundColor=e0e5ec&baseColor=f9c9b6`;
+
+                        loginBtn.className = 'nav-profile-badge hide-on-mobile';
+                        loginBtn.href = 'akun.html';
+                        loginBtn.innerHTML = `<img src="${avatarUrl}" alt="Avatar" draggable="false"><span>${displayName}</span>`;
+
+                        if (mobileAccountBtn) {
+                            mobileAccountBtn.innerHTML = `<img src="${avatarUrl}" alt="Avatar" draggable="false" style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover; margin-bottom: 2px;"><span>${displayName}</span>`;
+                        }
+                    }
+                    syncBadges(session.access_token);
+                } catch (e) {}
+            }
+
+            async function syncBadges(token) {
+                try {
+                    const cartRes = await fetch(`${BASE_URL}/api/cart`, { headers: { 'Authorization': `Bearer ${token}` } });
+                    if (cartRes.ok) {
+                        const cartItems = await cartRes.json();
+                        const totalQty = cartItems.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
+                        const cb = document.getElementById('cartBadge');
+                        const mcb = document.getElementById('mobileCartBadge');
+                        if (cb) { cb.style.display = totalQty > 0 ? 'flex' : 'none'; cb.innerText = totalQty > 99 ? '99+' : totalQty; }
+                        if (mcb) { mcb.style.display = totalQty > 0 ? 'flex' : 'none'; mcb.innerText = totalQty > 99 ? '99+' : totalQty; }
+                    }
+                } catch (e) {}
+
+                try {
+                    const orderRes = await fetch(`${BASE_URL}/api/orders`, { headers: { 'Authorization': `Bearer ${token}` } });
+                    if (orderRes.ok) {
+                        const orders = await orderRes.json();
+                        const activeOrders = orders.filter(o => o.status !== 'Selesai' && o.status !== 'Dibatalkan');
+                        const ob = document.getElementById('orderBadge');
+                        const mob = document.getElementById('mobileOrderBadge');
+                        if (activeOrders.length > 0) {
+                            ob.style.display = 'flex'; ob.innerText = activeOrders.length;
+                            if(mob) { mob.style.display = 'flex'; mob.innerText = activeOrders.length; }
+                        }
+                    }
+                } catch (e) {}
+            }
+
+            // =========================================================================
+            // HPC UPGRADE 2: STALE-WHILE-REVALIDATE PROMO SYNC
+            // =========================================================================
+            async function loadVouchers() {
+                const container = document.getElementById('promoContainer');
+                let vouchers = [];
+
+                const cachedVouchers = getLocalCache('bakoel_promos_catalog');
+                if (cachedVouchers) {
+                    try {
+                        vouchers = cachedVouchers;
+                        renderVouchers(vouchers, container);
+                    } catch(e) {
+                        localStorage.removeItem('bakoel_promos_catalog');
+                    }
+                }
+
+                try {
+                    const headers = {};
+                    if(session) { headers['Authorization'] = `Bearer ${session.access_token}`; }
+
+                    const res = await fetch(`${BASE_URL}/api/vouchers`, { headers });
+                    if (res.ok) {
+                        const freshVouchers = await res.json();
+                        
+                        // Normalisasi Data (Anti-Crash Tipe Data)
+                        freshVouchers.forEach(v => {
+                            v.code = String(v.code || '').toUpperCase();
+                            v.title = String(v.title || 'Promo');
+                            v.desc = String(v.desc || '');
+                            v.color = String(v.color || 'var(--accent-color)');
+                            v.min_purchase = Number(v.min_purchase) || 0;
+                            v.discount_amount = Number(v.discount_amount) || 0;
+                            v.max_discount = Number(v.max_discount) || 0;
+                            v.is_percent = Boolean(v.is_percent);
+                        });
+
+                        setLocalCache('bakoel_promos_catalog', freshVouchers, 30 * 60 * 1000);
+                        
+                        let needsRender = false;
+                        if (vouchers.length === 0) {
+                            needsRender = true;
+                        } else {
+                            try { needsRender = JSON.stringify(freshVouchers) !== JSON.stringify(cachedVouchers); } 
+                            catch(e) { needsRender = true; }
+                        }
+
+                        if (needsRender) {
+                            vouchers = freshVouchers;
+                            renderVouchers(vouchers, container);
+                        }
+                        
+                        // Update Badges Jika Promo Tampil
+                        const pb = document.getElementById('promoBadge');
+                        const mpb = document.getElementById('mobilePromoBadge');
+                        if(session && vouchers.length > 0) {
+                            if (pb) { pb.style.display = 'flex'; pb.innerText = String(vouchers.length); }
+                            if (mpb) { mpb.style.display = 'flex'; mpb.innerText = String(vouchers.length); }
+                            setLocalCache('bakoel_promo_qty', vouchers.length);
+                        }
+                    }
+                } catch (error) {
+                    if (vouchers.length === 0) {
+                        container.innerHTML = `
+                            <div class="empty-state">
+                                <i class="fas fa-ticket-alt empty-icon" style="color: #ff4757;"></i>
+                                <div class="empty-text" style="color: #ff4757;">Gagal Memuat Promo</div>
+                                <div class="empty-subtext">Periksa koneksi internet Anda.</div>
+                                <button onclick="location.reload()" class="btn-shop-now" style="background:#ff4757; color:white;"><i class="fas fa-sync-alt"></i> Coba Lagi</button>
+                            </div>
+                        `;
+                    }
+                }
+            }
+
+            // =========================================================================
+            // HPC UPGRADE 3: DOM BATCHING MENGGUNAKAN DocumentFragment
+            // =========================================================================
+            function renderVouchers(vouchersList, container) {
+                if (vouchersList.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-ticket-alt empty-icon"></i>
+                            <div class="empty-text">Tidak Ada Promo</div>
+                            <div class="empty-subtext">Saat ini belum ada kode promo yang tersedia.</div>
+                            <a href="index.html" class="btn-shop-now"><i class="fas fa-shopping-cart"></i> Mulai Belanja</a>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const fragment = document.createDocumentFragment();
+
+                vouchersList.forEach(v => {
+                    const safeCode = escapeHTML(v.code);
+                    const safeTitle = escapeHTML(v.title);
+                    const safeDesc = escapeHTML(v.desc);
+                    
+                    // Sanitasi ketat Color Hex/RGB (Anti CSS Injection #40)
+                    let safeColor = escapeHTML(v.color);
+                    if (!/^[a-zA-Z0-9#\(\)\s,]+$/.test(safeColor)) safeColor = 'var(--accent-color)';
+
+                    const minPurchaseText = v.min_purchase > 0 ? formatRupiah(v.min_purchase) : 'Tanpa Minimal';
+                    
+                    let discountText = '';
+                    if (v.is_percent) {
+                        discountText = `${v.discount_amount}%`;
+                        if (v.max_discount > 0) discountText += ` (Maks. ${formatRupiah(v.max_discount)})`;
+                    } else {
+                        discountText = formatRupiah(v.discount_amount);
+                    }
+
+                    const card = document.createElement('div');
+                    card.className = 'promo-card';
+                    card.innerHTML = `
+                        <div class="promo-header" style="background: ${safeColor}">
+                            <div class="promo-title">${safeTitle}</div>
+                            <div class="promo-desc">${safeDesc}</div>
+                        </div>
+                        <div class="promo-body">
+                            <div class="promo-info-row"><span class="info-label">Potongan</span><span class="info-value">${escapeHTML(discountText)}</span></div>
+                            <div class="promo-info-row"><span class="info-label">Min. Belanja</span><span class="info-value">${escapeHTML(minPurchaseText)}</span></div>
+                            <div class="promo-code-box">
+                                <span class="code-text" id="code-${safeCode}">${safeCode}</span>
+                                <button class="copy-btn" onclick="window.copyPromo('${safeCode}', this)"><i class="far fa-copy"></i> Salin</button>
+                            </div>
+                        </div>
+                    `;
+                    fragment.appendChild(card);
+                });
+
+                container.innerHTML = '';
+                container.appendChild(fragment);
+            }
+
+            // =========================================================================
+            // MENGUNCI FUNGSI SALIN PROMO (Anti DOM Clobbering #5 & Event Hijacking)
+            // =========================================================================
+            Object.defineProperty(window, 'copyPromo', {
+                value: function(code, btnElement) {
+                    const safeCode = String(code);
+                    
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(safeCode).then(() => {
+                            const originalHTML = btnElement.innerHTML;
+                            btnElement.innerHTML = '<i class="fas fa-check"></i> Tersalin!';
+                            btnElement.classList.add('copied');
+                            
+                            // Analytics tracking
+                            if (window.BakoelAnalytics && typeof window.BakoelAnalytics.trackFunnel === 'function') {
+                                window.BakoelAnalytics.trackFunnel('Menyalin Kode Promo: ' + safeCode);
+                            }
+
+                            setTimeout(() => { 
+                                btnElement.innerHTML = originalHTML; 
+                                btnElement.classList.remove('copied'); 
+                            }, 2000);
+                        }).catch(err => {
+                            showNotification("Gagal", "Gagal menyalin kode. Silakan salin manual.", "error");
+                        });
+                    } else {
+                        // Fallback untuk browser lawas
+                        const tempInput = document.createElement("input");
+                        tempInput.value = safeCode;
+                        document.body.appendChild(tempInput);
+                        tempInput.select();
+                        try {
+                            document.execCommand("copy");
+                            const originalHTML = btnElement.innerHTML;
+                            btnElement.innerHTML = '<i class="fas fa-check"></i> Tersalin!';
+                            btnElement.classList.add('copied');
+                            
+                            if (window.BakoelAnalytics && typeof window.BakoelAnalytics.trackFunnel === 'function') {
+                                window.BakoelAnalytics.trackFunnel('Menyalin Kode Promo: ' + safeCode);
+                            }
+
+                            setTimeout(() => { 
+                                btnElement.innerHTML = originalHTML; 
+                                btnElement.classList.remove('copied'); 
+                            }, 2000);
+                        } catch (err) {
+                            showNotification("Gagal", "Gagal menyalin kode. Silakan salin manual.", "error");
+                        }
+                        document.body.removeChild(tempInput);
+                    }
+                },
+                writable: false,
+                configurable: false
+            });
+
+            document.addEventListener('DOMContentLoaded', () => {
+                updateNavUI();
+                loadFooterData();
+                loadVouchers();
+            });
+
+        })(); // Penutup IIFE Security
+    </script>
+</body>
+</html>
