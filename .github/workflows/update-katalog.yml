@@ -1,0 +1,28 @@
+name: Update Katalog CDN Bakoel
+
+on:
+  schedule:
+    # Berjalan otomatis setiap jam 00:00 WIB (17:00 UTC)
+    - cron: '0 17 * * *'
+  workflow_dispatch: # Mengaktifkan tombol "Play" manual
+
+jobs:
+  sedot-data-gudang:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Membuka Repositori Bakoel
+        uses: actions/checkout@v3
+
+      - name: Membangunkan Render & Menyedot Data
+        # Memakai fitur retry karena Render butuh 50 detik untuk bangun dari tidur
+        run: |
+          curl -s --retry 5 --retry-delay 15 --retry-connrefused https://rust-vjn7.onrender.com/api/products > katalog.json
+          
+      - name: Simpan (Commit) ke GitHub Pages
+        run: |
+          git config --global user.name 'Sistem CDN Bakoel'
+          git config --global user.email 'admin@bakoel.com'
+          git add katalog.json
+          # Robot hanya akan menyimpan jika ada perubahan harga/stok
+          git diff --quiet && git diff --staged --quiet || git commit -m "Auto-update katalog CDN grosir harian"
+          git push
