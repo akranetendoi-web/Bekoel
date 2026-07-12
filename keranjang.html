@@ -688,7 +688,7 @@
             }
 
             async function syncBadges(token) {
-                // Perisai Keranjang
+                // 1. Perisai Keranjang
                 const cachedCart = getLocalCache('bakoel_cart_qty');
                 if (cachedCart === null) {
                     try {
@@ -698,24 +698,26 @@
                             const totalQty = cartItems.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
                             setLocalCache('bakoel_cart_qty', totalQty, 10 * 60 * 1000);
                             
-                            // Eksekusi langsung tanpa memanggil fungsi dari luar
+                            // Eksekusi DOM Langsung (Tanpa Memanggil Fungsi Luar)
                             const cartBadge = document.getElementById('cartBadge');
                             const mobileCartBadge = document.getElementById('mobileCartBadge');
                             const displayText = totalQty > 99 ? '99+' : escapeHTML(String(totalQty));
                             
                             if(cartBadge) {
-                                cartBadge.style.display = totalQty > 0 ? 'flex' : 'none'; 
-                                cartBadge.innerText = displayText; 
+                                cartBadge.style.display = totalQty > 0 ? 'flex' : 'none';
+                                cartBadge.innerText = displayText;
                             }
-                            if(mobileCartBadge) { 
-                                mobileCartBadge.style.display = totalQty > 0 ? 'flex' : 'none'; 
-                                mobileCartBadge.innerText = displayText; 
+                            if(mobileCartBadge) {
+                                mobileCartBadge.style.display = totalQty > 0 ? 'flex' : 'none';
+                                mobileCartBadge.innerText = displayText;
                             }
                         }
-                    } catch (e) {}
+                    } catch (e) {
+                        console.error("Gagal sinkronisasi keranjang:", e);
+                    }
                 }
 
-                // Perisai Voucher (Menembak Backend Render)
+                // 2. Perisai Voucher
                 const cachedPromo = getLocalCache('bakoel_promo_qty');
                 if (cachedPromo === null) {
                     try {
@@ -726,15 +728,23 @@
                             
                             const pBadge = document.getElementById('promoBadge');
                             const mpBadge = document.getElementById('mobilePromoBadge');
-                            if (promos.length > 0) {
-                                if(pBadge) { pBadge.style.display = 'flex'; pBadge.innerText = String(promos.length); }
-                                if(mpBadge) { mpBadge.style.display = 'flex'; mpBadge.innerText = String(promos.length); }
+                            const promoLen = String(promos.length);
+                            
+                            if(pBadge) { 
+                                pBadge.style.display = promos.length > 0 ? 'flex' : 'none'; 
+                                pBadge.innerText = promoLen; 
+                            }
+                            if(mpBadge) { 
+                                mpBadge.style.display = promos.length > 0 ? 'flex' : 'none'; 
+                                mpBadge.innerText = promoLen; 
                             }
                         }
-                    } catch (e) {}
+                    } catch (e) {
+                        console.error("Gagal sinkronisasi voucher:", e);
+                    }
                 }
 
-                // Perisai Pesanan Aktif
+                // 3. Perisai Pesanan Aktif
                 const cachedOrder = getLocalCache('bakoel_order_qty');
                 if (cachedOrder === null) {
                     try {
@@ -742,16 +752,25 @@
                         if (orderRes.ok) {
                             const orders = await orderRes.json();
                             const activeOrders = orders.filter(o => o.status !== 'Selesai' && o.status !== 'Dibatalkan');
+                            const activeLenStr = String(activeOrders.length);
+                            
                             setLocalCache('bakoel_order_qty', activeOrders.length, 5 * 60 * 1000);
                             
                             const oBadge = document.getElementById('orderBadge');
                             const moBadge = document.getElementById('mobileOrderBadge');
-                            if (activeOrders.length > 0) {
-                                if(oBadge) { oBadge.style.display = 'flex'; oBadge.innerText = String(activeOrders.length); }
-                                if(moBadge) { moBadge.style.display = 'flex'; moBadge.innerText = String(activeOrders.length); }
+                            
+                            if(oBadge) { 
+                                oBadge.style.display = activeOrders.length > 0 ? 'flex' : 'none'; 
+                                oBadge.innerText = activeLenStr; 
+                            }
+                            if(moBadge) { 
+                                moBadge.style.display = activeOrders.length > 0 ? 'flex' : 'none'; 
+                                moBadge.innerText = activeLenStr; 
                             }
                         }
-                    } catch (e) {}
+                    } catch (e) {
+                        console.error("Gagal sinkronisasi pesanan:", e);
+                    }
                 }
             }
 
@@ -1610,7 +1629,11 @@
                         
                         // Hapus memori angka badge setelah pesanan sukses
                         setLocalCache('bakoel_cart_qty', 0);
-                        updateCartBadgeDirectly(0, false);
+                        
+                        const cartBadge = document.getElementById('cartBadge');
+                        const mobileCartBadge = document.getElementById('mobileCartBadge');
+                        if (cartBadge) { cartBadge.style.display = 'none'; cartBadge.innerText = '0'; }
+                        if (mobileCartBadge) { mobileCartBadge.style.display = 'none'; mobileCartBadge.innerText = '0'; }
 
                         if (result.midtrans_token) {
                             localStorage.setItem(`token_${result.order_id}`, result.midtrans_token);
