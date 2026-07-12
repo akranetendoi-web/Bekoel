@@ -1207,13 +1207,13 @@
 
                     const svgBase = "data:image/svg+xml;base64,";
                     const courierLogos = {
-                        "jne": svgBase + "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgNDAiPjx0ZXh0IHg9IjUwJSIgeT0iNTUlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSI5MDAiIGZvbnQtc2l6ZT0iMjYiIGZvbnQtc3R5bGU9Iml0YWxpYyIgZmlsbD0iIzAwNDA5QSI+Sk5FPC90ZXh0Pjwvc3ZnPg==",
-                        "jnt": svgBase + "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgNDAiPjx0ZXh0IHg9IjUwJSIgeT0iNTUlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSI5MDAiIGZvbnQtc2l6ZT0iMjYiIGZvbnQtc3R5bGU9Iml0YWxpYyIgZmlsbD0iI0UzMDAwRiI+SiZhbXA7VDwvdGV4dD48L3N2Zz4=",
-                        "sicepat": svgBase + "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgNDAiPjx0ZXh0IHg9IjUwJSIgeT0iNTUlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSI5MDAiIGZvbnQtc2l6ZT0iMjIiIGZvbnQtc3R5bGU9Iml0YWxpYyIgZmlsbD0iI0UzMDAwRiI+U2lDZXBhdDwvdGV4dD48L3N2Zz4=",
-                        "pos": svgBase + "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgNDAiPjx0ZXh0IHg9IjUwJSIgeT0iNTUlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSI5MDAiIGZvbnQtc2l6ZT0iMjYiIGZvbnQtc3R5bGU9Iml0YWxpYyIgZmlsbD0iI0YzNzAyMSI+UE9TPC90ZXh0Pjwvc3ZnPg==",
-                        "tiki": svgBase + "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgNDAiPjx0ZXh0IHg9IjUwJSIgeT0iNTUlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSI5MDAiIGZvbnQtc2l6ZT0iMjYiIGZvbnQtc3R5bGU9Iml0YWxpYyIgZmlsbD0iIzAwQUVFRiI+VElLSTwvdGV4dD48L3N2Zz4=",
-                        "anteraja": svgBase + "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgNDAiPjx0ZXh0IHg9IjUwJSIgeT0iNTUlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSI5MDAiIGZvbnQtc2l6ZT0iMjAiIGZvbnQtc3R5bGU9Iml0YWxpYyIgZmlsbD0iI0ZGMDA3RiI+QW50ZXJhamE8L3RleHQ+PC9zdmc+",
-                        "ninja": svgBase + "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgNDAiPjx0ZXh0IHg9IjUwJSIgeT0iNTUlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSI5MDAiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtc3R5bGU9Iml0YWxpYyIgZmlsbD0iI0MxMDAwMCI+TmluamE8L3RleHQ+PC9zdmc+"
+                        "jne": "https://upload.wikimedia.org/wikipedia/commons/9/92/Logo_JNE.svg",
+                        "jnt": "https://upload.wikimedia.org/wikipedia/commons/b/b3/J%26T_Express_logo.svg",
+                        "sicepat": "https://upload.wikimedia.org/wikipedia/commons/8/82/SiCepat_Ekspres_logo.svg",
+                        "pos": "https://upload.wikimedia.org/wikipedia/commons/0/00/Pos_Indonesia_logo_%282023%29.svg",
+                        "tiki": "https://upload.wikimedia.org/wikipedia/commons/2/23/Logo_TIKI.svg",
+                        "anteraja": "https://upload.wikimedia.org/wikipedia/commons/a/a2/Anteraja_logo.svg",
+                        "ninja": "https://upload.wikimedia.org/wikipedia/commons/3/37/Ninja_Van_logo.svg"
                     };
 
                     container.innerHTML = '';
