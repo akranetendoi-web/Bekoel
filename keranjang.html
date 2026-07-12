@@ -688,32 +688,68 @@
             }
 
             async function syncBadges(token) {
-                try {
-                    const promoRes = await fetch(`${BASE_URL}/api/vouchers`, { headers: { 'Authorization': `Bearer ${token}` } });
-                    if (promoRes.ok) {
-                        const promos = await promoRes.json();
-                        const pBadge = document.getElementById('promoBadge');
-                        const mpBadge = document.getElementById('mobilePromoBadge');
-                        if (promos.length > 0) {
-                            pBadge.style.display = 'flex'; pBadge.innerText = String(promos.length);
-                            if(mpBadge) { mpBadge.style.display = 'flex'; mpBadge.innerText = String(promos.length); }
+                // Perisai Keranjang
+                const cachedCart = getLocalCache('bakoel_cart_qty');
+                if (cachedCart === null) {
+                    try {
+                        const cartRes = await fetch(`${BASE_URL}/api/cart`, { headers: { 'Authorization': `Bearer ${token}` } });
+                        if (cartRes.ok) {
+                            const cartItems = await cartRes.json();
+                            const totalQty = cartItems.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
+                            setLocalCache('bakoel_cart_qty', totalQty, 10 * 60 * 1000);
+                            
+                            // Gunakan pelindung opsional untuk mencegah error pada halaman yang tidak memiliki icon badge
+                            if (typeof updateCartBadgeDirectly === "function") {
+                                updateCartBadgeDirectly(totalQty, false); 
+                            } else {
+                                const cartBadge = document.getElementById('cartBadge');
+                                const mobileCartBadge = document.getElementById('mobileCartBadge');
+                                const displayText = totalQty > 99 ? '99+' : escapeHTML(String(totalQty));
+                                if(cartBadge && totalQty > 0) { cartBadge.style.display = 'flex'; cartBadge.innerText = displayText; }
+                                if(mobileCartBadge && totalQty > 0) { mobileCartBadge.style.display = 'flex'; mobileCartBadge.innerText = displayText; }
+                            }
                         }
-                    }
-                } catch (e) {}
+                    } catch (e) {}
+                }
 
-                try {
-                    const orderRes = await fetch(`${BASE_URL}/api/orders`, { headers: { 'Authorization': `Bearer ${token}` } });
-                    if (orderRes.ok) {
-                        const orders = await orderRes.json();
-                        const activeOrders = orders.filter(o => o.status !== 'Selesai' && o.status !== 'Dibatalkan');
-                        const oBadge = document.getElementById('orderBadge');
-                        const moBadge = document.getElementById('mobileOrderBadge');
-                        if (activeOrders.length > 0) {
-                            oBadge.style.display = 'flex'; oBadge.innerText = String(activeOrders.length);
-                            if(moBadge) { moBadge.style.display = 'flex'; moBadge.innerText = String(activeOrders.length); }
+                // Perisai Voucher (Menembak Backend Render)
+                const cachedPromo = getLocalCache('bakoel_promo_qty');
+                if (cachedPromo === null) {
+                    try {
+                        const promoRes = await fetch(`${BASE_URL}/api/vouchers`, { headers: { 'Authorization': `Bearer ${token}` } });
+                        if (promoRes.ok) {
+                            const promos = await promoRes.json();
+                            setLocalCache('bakoel_promo_qty', promos.length, 30 * 60 * 1000);
+                            
+                            const pBadge = document.getElementById('promoBadge');
+                            const mpBadge = document.getElementById('mobilePromoBadge');
+                            if (promos.length > 0) {
+                                if(pBadge) { pBadge.style.display = 'flex'; pBadge.innerText = String(promos.length); }
+                                if(mpBadge) { mpBadge.style.display = 'flex'; mpBadge.innerText = String(promos.length); }
+                            }
                         }
-                    }
-                } catch (e) {}
+                    } catch (e) {}
+                }
+
+                // Perisai Pesanan Aktif
+                const cachedOrder = getLocalCache('bakoel_order_qty');
+                if (cachedOrder === null) {
+                    try {
+                        const orderRes = await fetch(`${BASE_URL}/api/orders`, { headers: { 'Authorization': `Bearer ${token}` } });
+                        if (orderRes.ok) {
+                            const orders = await orderRes.json();
+                            const activeOrders = orders.filter(o => o.status !== 'Selesai' && o.status !== 'Dibatalkan');
+                            setLocalCache('bakoel_order_qty', activeOrders.length, 5 * 60 * 1000);
+                            
+                            const oBadge = document.getElementById('orderBadge');
+                            const moBadge = document.getElementById('mobileOrderBadge');
+                            if (activeOrders.length > 0) {
+                                if(oBadge) { oBadge.style.display = 'flex'; oBadge.innerText = String(activeOrders.length); }
+                                if(moBadge) { moBadge.style.display = 'flex'; moBadge.innerText = String(activeOrders.length); }
+                            }
+                        }
+                    } catch (e) {}
+                }
             }
 
             function formatRupiah(number) { 
@@ -1126,6 +1162,83 @@
                     const payloadData = {
                         destination_postal_code: String(globalZip),
                         postal_code: String(globalZip),
+                        couriers: "jne,sicepat,jnt,pos,tiki,anteraja,ninja", 
+                        items: payloadItems 
+                    };
+
+                    const res = await fetch(`${BASE_URL}/api/shipping-rates`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.access_token}` },
+                        body: JSON.stringify(payloadData)
+                    });
+                    
+                    if (!res.ok) {
+                        const errData = await res.json();
+                        throw new Error(errData.error || "Gagal menghubungi kurir");
+                    }
+                    const data = await res.json();
+                    const pricing = data.pricing || [];
+                    
+                    if(pricing.length === 0) {
+                        container.innerHTML = '<div style="text-align:center; font-size:12px; color:#ff4757; padding: 20px;">Kurir tidak menjangkau kodepos ini.</div>';
+                        return;
+                    }
+
+                    const courierLogos = {
+                        "jne": "https://upload.wikimedia.org/wikipedia/commons/9/92/Logo_JNE.svg",
+                        "jnt": "https://upload.wikimedia.org/wikipedia/commons/b/b3/J%26T_Express_logo.svg",
+                        "sicepat": "https://upload.wikimedia.org/wikipedia/commons/8/82/SiCepat_Ekspres_logo.svg",
+                        "pos": "https://upload.wikimedia.org/wikipedia/commons/0/00/Pos_Indonesia_logo_%282023%29.svg",
+                        "tiki": "https://upload.wikimedia.org/wikipedia/commons/2/23/Logo_TIKI.svg",
+                        "anteraja": "https://upload.wikimedia.org/wikipedia/commons/a/a2/Anteraja_logo.svg",
+                        "ninja": "https://upload.wikimedia.org/wikipedia/commons/3/37/Ninja_Van_logo.svg"
+                    };
+
+                    container.innerHTML = '';
+                    pricing.forEach(c => {
+                        const price = c.price || 0;
+                        const companyRaw = String(c.company).toLowerCase();
+                        const safeCompany = escapeHTML(companyRaw);
+                        const safeType = escapeHTML(String(c.type));
+                        const cName = `${safeCompany.toUpperCase()} - ${safeType.toUpperCase()}`;
+                        
+                        const logoUrl = courierLogos[companyRaw] || 'https://placehold.co/50x20/e0e5ec/a3b1c6?text=Kurir';
+                        const durasi = c.duration ? `${escapeHTML(c.duration)} Hari` : '-';
+                        
+                        container.innerHTML += `
+                            <div class="promo-pill" style="cursor:pointer; display: flex; align-items: center;" onclick="window.selectCourier('${safeCompany}', '${safeType}', ${price}, '${escapeHTML(cName)}')">
+                                
+                                <div class="promo-pill-info" style="display: flex; align-items: center; gap: 12px; flex: 1;">
+                                    <div style="width: 50px; height: 25px; display: flex; justify-content: center; align-items: center; background: #fff; padding: 2px 5px; border-radius: 6px; box-shadow: var(--neu-pressed-sm);">
+                                        <img src="${logoUrl}" alt="${safeCompany}" style="max-width: 100%; max-height: 100%; object-fit: contain;" draggable="false">
+                                    </div>
+                                    <div>
+                                        <span class="promo-pill-code" style="color: var(--accent-color); font-size: 13px;">${escapeHTML(cName)}</span>
+                                        <div class="promo-pill-desc">Estimasi: ${durasi}</div>
+                                    </div>
+                                </div>
+
+                                <div style="font-weight:700; color:var(--text-main); font-size: 13px; text-align: right;">
+                                    ${formatRupiah(price)}
+                                </div>
+                                
+                            </div>`;
+                    });
+                } catch (error) {
+                    let errMsg = error.message || "Gagal menghubungi kurir";
+                    if (errMsg.toLowerCase().includes("postal code") || errMsg.toLowerCase().includes("biteship")) {
+                        errMsg = "Kode pos tidak ditemukan atau tidak terjangkau kurir. HARAP UNTUK MEMMPERBAIKI KODE POS.";
+                    }
+                    container.innerHTML = `<div style="text-align:center; font-size:12px; color:#ff4757; padding: 20px;"><b>Gagal:</b> ${escapeHTML(errMsg)}</div>`;
+                }
+            }
+                
+                try {
+                    const payloadItems = cartItems.map(x => ({ product_id: x.product_id, quantity: Number(x.quantity) }));
+                    
+                    const payloadData = {
+                        destination_postal_code: String(globalZip),
+                        postal_code: String(globalZip),
                         couriers: "jne,sicepat,jnt,pos", 
                         items: payloadItems 
                     };
@@ -1492,6 +1605,10 @@
                         const result = await res.json();
                         if(!res.ok) throw new Error(result.error || "Gagal memproses pesanan."); 
                         
+                        // Hapus memori angka badge setelah pesanan sukses
+                        setLocalCache('bakoel_cart_qty', 0);
+                        updateCartBadgeDirectly(0, false);
+
                         if (result.midtrans_token) {
                             localStorage.setItem(`token_${result.order_id}`, result.midtrans_token);
                             
