@@ -1300,21 +1300,13 @@
                 configurable: false
             });
 
-            async function loadMidtransScriptDynamically() {
-                try {
-                    const res = await fetch('/api/config');
-                    if (res.ok) {
-                        const data = await res.json();
-                        if (data.midtrans_client_key) {
-                            const script = document.createElement('script');
-                            script.type = 'text/javascript';
-                            script.src = 'https://app.sandbox.midtrans.com/snap/snap.js';
-                            script.setAttribute('data-client-key', escapeHTML(data.midtrans_client_key));
-                            document.head.appendChild(script);
-                        }
-                    }
-                } catch (e) {}
-            }
+            function loadMidtransDynamically() {
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = 'https://app.sandbox.midtrans.com/snap/snap.js'; 
+    script.setAttribute('data-client-key', 'Mid-client-93w9ptgEHoMbavn8'); 
+    document.head.appendChild(script);
+}
 
             document.addEventListener('DOMContentLoaded', () => {
                 loadMidtransScriptDynamically();
